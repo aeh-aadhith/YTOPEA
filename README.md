@@ -1,24 +1,24 @@
-# 📻 YTOPEA: YouTube Ophthalmology Education & Pattern Analysis
+# YTOPEA: YouTube Ophthalmology Education & Pattern Analysis
 
 YTOPEA is a Python-based tool that:
 
 - Extracts video metadata from YouTube channels run by ophthalmologists or eye hospitals
 - Retrieves transcripts (if available)
-- Classifies videos into categories like surgical tutorials, research updates, or new technology reviews
-- Helps analyze trends in online ophthalmology education
+- Classifies videos into categories like surgical tutorials, research updates, new technology reviews, etc.
+- Returns a dataframe of videos, their metadata and above identified category.
 
 ---
 
-## 🚀 Features
+## Features
 
-- 📅 Pulls videos and metadata from any public YouTube channel
-- 🧠 Uses LLM (Groq API + Qwen 32B) to classify videos
-- 🎯 Supports classification via title, description, and transcript (when available)
-- 🧼 Clean modular code structure for easy extension and reuse
+- Pulls videos from public YouTube channels
+- Creates a dataframe of all videos of the channels, with its metadata like views, likes, upload date, availability of transcript, etc.
+- Uses LLM (Groq API + Qwen 32B) to classify videos using title, description, and transcript (when available)
+- Clean modular code structure for easy extension and reuse
 
 ---
 
-## 📦 Setup Instructions
+## Setup Instructions
 
 1. Clone the repo:
 
@@ -38,14 +38,14 @@ pip install -r requirements.txt
 ```python
 # keys.py
 GROQ_API = "your-groq-api-key"
-YOUTUBE_API = "your-youtube-api-key"
+API_KEY = "your-youtube-api-key"
 ```
 
 (Important: This file is in .gitignore and won't be committed)
 
 ---
 
-## ▶️ How to Use
+## How to Use
 
 Run the main script to extract and classify videos from one or more YouTube channels:
 
@@ -57,7 +57,7 @@ Output: A CSV file (e.g., classified\_videos.csv) with titles, metadata, and pre
 
 ---
 
-## 🧠 Classification Categories
+## Classification Categories
 
 The model classifies each video into one of the following:
 
@@ -70,7 +70,7 @@ The model classifies each video into one of the following:
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 YTOPEA/
@@ -87,14 +87,14 @@ YTOPEA/
 
 ---
 
-## 📄 License
+## License
 
 MIT License (add LICENSE file if needed)
 
 ---
 
-## 🙇‍♂️ Author
+## Author
 
 **Aadhith Manoj**\
-Created at CODA, Aravind Eye Hospital Chennai
+Software Engineer Intern, CODA, Aravind Eye Hospital Chennai
 
