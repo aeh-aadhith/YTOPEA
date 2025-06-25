@@ -1,0 +1,9 @@
+google-api-core==2.25.1
+google-api-python-client==2.172.0
+google-auth==2.40.3
+googleapis-common-protos==1.70.0
+groq==0.28.0
+pandas==2.2.3
+tqdm==4.67.1
+youtube-transcript-api==1.1.0
+yt-dlp==2025.6.9
