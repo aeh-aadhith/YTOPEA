@@ -1,45 +1,49 @@
 import video_data_extraction
 from get_transcript import videoID_to_transcript
 import LLM_Classfn
-from tools import save_to_csv
+from tools import save_to_csv, shorten_transcript
+import pandas as pd
 
 if __name__ == "__main__":
 
     example_channel_id = [
-        'UCfBf_eZSur4tGh-uSuqXZoA',
         'UCuyl9HIbX_fYTuJbLEz1KQw'
     ]
-    
-    df = video_data_extraction.many_channels(example_channel_id)
+    import os
 
-    classifications = []
-    transcripts_available = []
+    output_path = "Aurotube_videos.csv"
 
-    for idx, row in df.iterrows():
+    # Load previous progress if file exists
+    if os.path.exists(output_path):
+        df = pd.read_csv(output_path)
+        start_index = len(df)
+        print(f"Resuming from index {start_index} (already classified: {start_index})")
+    else:
+        df = video_data_extraction.many_channels(example_channel_id)
+        df["Transcript_Available"] = ""
+        df["Classification"] = ""
+        start_index = 0
+
+    for idx in range(start_index, len(df)):
+        row = df.loc[idx]
         video_id = row["Video ID"]
         title = row["Title"]
         description = row["Description"]
-        label = None
-
         transcript = videoID_to_transcript(video_id)
 
         if transcript:
-            transcripts_available.append("Yes")
+            transcript = shorten_transcript(transcript)
+            df.at[idx, 'Transcript_Available'] = "Yes"
         else:
-            transcripts_available.append("No")
+            df.at[idx, 'Transcript_Available'] = "No"
 
-        # Option 1: Classify video even without transcript
-        label = LLM_Classfn.classify_video(title=title, description=description, transcript=transcript)
-        
-        # Option 2: Classify only if there is transcript
-        # if transcript:
-        #     label = LLM_Classfn.classify_ophthalmology_video_with_title(title=title, description=description)
-        # else:
-        #     label = None  
+        try:
+            label = LLM_Classfn.classify_video(title=title, description=description, transcript=transcript)
+        except Exception as e:
+            print(f"Error classifying {video_id}: {e}")
+            label = None
 
+        df.at[idx, "Classification"] = label
         print(f"{video_id} → {label}")
-        classifications.append(label)
-    
-    df['Transcript_Available'] = transcripts_available
-    df["Classification"] = classifications
-    save_to_csv(df)
+
+        df.to_csv(output_path, index=False)
