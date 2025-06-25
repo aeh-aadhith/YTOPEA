@@ -1,1 +1,4 @@
 keys.py
+*.csv
+*.ods
+*.pyc
